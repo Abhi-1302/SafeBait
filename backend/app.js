@@ -49,9 +49,13 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message });
 });
 
-const PORT = process.env.PORT || 5000;
-sequelize.sync().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Backend running on port ${PORT}`);
-  });
-});
+// const PORT = process.env.PORT || 5000;
+// sequelize.sync().then(() => {
+//   app.listen(PORT, () => {
+//     console.log(`Backend running on port ${PORT}`);
+//   });
+// });
+
+// For vercel deployment
+sequelize.sync();
+module.exports = app;
