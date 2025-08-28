@@ -26,33 +26,51 @@ router.post("/", authenticate, async (req, res) => {
   res.json(audience);
 });
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage: multer.memoryStorage() });
+// Upload recipients CSV for a specific audience
 router.post(
   "/:id/upload",
   authenticate,
   upload.single("file"),
   async (req, res) => {
     const { id } = req.params;
-    if (!req.file) return res.status(400).json({ message: "No file" });
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
 
     const recipients = [];
-    fs.createReadStream(req.file.path)
+
+    // Convert buffer to stream using streamifier
+    streamifier
+      .createReadStream(req.file.buffer)
       .pipe(csvParser())
       .on("data", (row) => {
-        if (row.email)
+        if (row.email) {
           recipients.push({
-            email: row.email,
-            name: row.name || "",
+            email: row.email.trim(),
+            name: row.name ? row.name.trim() : "",
             audienceId: id,
           });
+        }
       })
       .on("end", async () => {
-        await Recipient.bulkCreate(recipients, { ignoreDuplicates: true });
-        fs.unlinkSync(req.file.path);
-        res.json({ added: recipients.length });
+        try {
+          await Recipient.bulkCreate(recipients, { ignoreDuplicates: true });
+          res.json({ added: recipients.length });
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ message: "Failed to save recipients" });
+        }
+      })
+      .on("error", (err) => {
+        console.error(err);
+        res.status(400).json({ message: "Error parsing CSV file" });
       });
   }
 );
+
+// GET /api/audiences/:id
 router.get("/:id", authenticate, async (req, res) => {
   const { id } = req.params;
 
