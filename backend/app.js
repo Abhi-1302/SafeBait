@@ -20,6 +20,13 @@ const app = express();
 
 const FRONTEND_ORIGIN = "https://safe-bait.vercel.app";
 // const FRONTEND_ORIGIN = "http://localhost:3000";
+app.options(
+  "*",
+  cors({
+    origin: FRONTEND_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(
   cors({
     origin: FRONTEND_ORIGIN,
