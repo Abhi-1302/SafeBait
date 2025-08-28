@@ -18,11 +18,8 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
-const FRONTEND_ORIGIN =
-  process.env.NODE_ENV === "production"
-    ? "https://safe-bait.vercel.app/"
-    : "http://localhost:3000";
-
+const FRONTEND_ORIGIN = "https://safe-bait.vercel.app/";
+// const FRONTEND_ORIGIN = "http://localhost:3000";
 app.use(
   cors({
     origin: FRONTEND_ORIGIN,
