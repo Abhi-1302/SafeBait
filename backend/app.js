@@ -2,8 +2,8 @@ const path = require("path");
 
 const env = process.env.NODE_ENV || "development";
 require("dotenv").config({ path: path.resolve(__dirname, `.env.${env}`) });
-const express = require("express");
 const cors = require("cors");
+const express = require("express");
 const { sequelize } = require("./models");
 const bodyParser = require("body-parser");
 
@@ -18,7 +18,18 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
-app.use(cors());
+const FRONTEND_ORIGIN =
+  process.env.NODE_ENV === "production"
+    ? "https://safe-bait.vercel.app/"
+    : "http://localhost:3000";
+
+app.use(
+  cors({
+    origin: FRONTEND_ORIGIN,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
