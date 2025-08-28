@@ -5,10 +5,12 @@ This repository contains both backend (Node.js/Express/Postgres) and frontend (R
 
 ## 🗂️ Project Structure
 
+```
 .
-├── backend/ # Node.js Express API (Postgres)
-├── frontend/ # React.js + MUI app
-└── README.md # This file
+├── backend/    # Node.js Express API (Postgres)
+├── frontend/   # React.js + MUI app
+└── README.md   # This file
+```
 
 ## 🚀 Quick Start
 
