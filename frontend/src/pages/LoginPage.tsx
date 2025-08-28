@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, TextField, Button, Typography, Box, Paper } from "@mui/material";
+import { Container, TextField, Button, Typography, Box, Paper, CircularProgress, Backdrop, Fade } from "@mui/material";
 import { useAuth } from "../context/AuthContext.tsx";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
@@ -9,31 +9,35 @@ export default function LoginPage() {
   const [email, setEmail] = useState("admin@safebait.com");
   const [password, setPassword] = useState("SecurePass123!");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
     try {
       await login(email, password);
       window.location.href = "/";
     } catch {
       setError("Invalid credentials");
+      setIsLoading(false);
     }
   };
 
   return (
-    <Container maxWidth="lg">
-      <Box 
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: { xs: 0, md: 12 },
-          py: 3,
-          background: 'linear-gradient(135deg, #6B3CDA11 0%, #6B3CDA05 100%)',
-        }}
-      >
+    <>
+      <Container maxWidth="lg">
+        <Box 
+          sx={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: { xs: 0, md: 12 },
+            py: 3,
+            background: 'linear-gradient(135deg, #6B3CDA11 0%, #6B3CDA05 100%)',
+          }}
+        >
         <Box
           sx={{
             display: { xs: 'none', md: 'flex' },
@@ -205,6 +209,45 @@ export default function LoginPage() {
           </Box>
         </Paper>
       </Box>
-    </Container>
-  );
+        </Container>
+        <Backdrop
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            background: 'rgba(107, 60, 218, 0.1)',
+            backdropFilter: 'blur(4px)',
+          }}
+          open={isLoading}
+        >
+          <Fade in={isLoading}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2,
+                p: 4,
+                borderRadius: 2,
+                background: 'rgba(255, 255, 255, 0.9)',
+                boxShadow: '0 8px 32px rgba(107, 60, 218, 0.1)',
+                border: '1px solid rgba(107, 60, 218, 0.2)',
+              }}
+            >
+              <CircularProgress size={50} sx={{ color: '#6B3CDA' }} />
+              <Typography
+                sx={{
+                  background: 'linear-gradient(135deg, #6B3CDA 0%, #8B6BE3 100%)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  color: 'transparent',
+                  fontWeight: 600,
+                  fontSize: '1.1rem'
+                }}
+              >
+                Signing you in...
+              </Typography>
+            </Box>
+          </Fade>
+        </Backdrop>
+      </>
+    );
 }
