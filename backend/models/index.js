@@ -1,13 +1,19 @@
 const Sequelize = require("sequelize");
-const config =
-  require("../config/config")[process.env.NODE_ENV || "development"];
+const path = require("path");
 
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
-);
+const env = process.env.NODE_ENV || "development";
+require("dotenv").config({ path: path.resolve(__dirname, `../.env.${env}`) });
+
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+  logging: process.env.NODE_ENV === "development" ? console.log : false,
+});
 
 const models = {
   User: require("./user")(sequelize),
