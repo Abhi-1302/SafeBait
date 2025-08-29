@@ -17,10 +17,6 @@
       },
       "status": 204,
       "dest": "/app.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/app.js"
     }
   ]
 }
