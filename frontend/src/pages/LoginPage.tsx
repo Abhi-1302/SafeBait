@@ -187,6 +187,9 @@ export default function LoginPage() {
             >
               Sign In
             </Button>
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Link to="/forgot-password">Forgot Password?</Link>
+            </Box>
           </form>
           <Box sx={{ mt: 3, textAlign: 'center', borderTop: 1, borderColor: 'rgba(107, 60, 218, 0.1)', pt: 3 }}>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>

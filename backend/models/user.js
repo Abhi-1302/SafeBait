@@ -24,6 +24,22 @@ module.exports = (sequelize) => {
         defaultValue: false,
         allowNull: false,
       },
+      resetOTP: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      resetOTPExpiry: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      resetOTPAttempts: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     { sequelize, modelName: "user" }
   );

@@ -17,6 +17,7 @@ import AudienceDetailsPage from "./pages/AudienceDetailsPage.tsx";
 import TemplateManagement from "./pages/TemplateManagement.tsx";
 import AdminDashboard from "./components/AdminDashboard.tsx";
 import UserManagement from "./pages/UserManagement.tsx";
+import ForgotPassword from "./pages/ForgotPassword.tsx";
 import { NotificationProvider } from "./context/NotificationContext.tsx";
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage/>} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route
                 path="/"
                 element={
