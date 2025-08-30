@@ -18,20 +18,27 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
-const FRONTEND_ORIGIN = "https://safe-bait.vercel.app";
-// const FRONTEND_ORIGIN = "http://localhost:3000";
-app.options(
-  "*",
-  cors({
-    origin: FRONTEND_ORIGIN,
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "https://safe-bait.vercel.app",
+  // "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: FRONTEND_ORIGIN,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Origin",
+      "X-Requested-With",
+      "Content-Type",
+      "Accept",
+      "Authorization",
+    ],
   })
 );
 app.use(express.json());
@@ -56,13 +63,12 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message });
 });
 
-// const PORT = process.env.PORT || 5000;
-// sequelize.sync().then(() => {
-//   app.listen(PORT, () => {
-//     console.log(`Backend running on port ${PORT}`);
-//   });
-// });
+const PORT = process.env.PORT || 5000;
+sequelize.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Backend running on port ${PORT}`);
+  });
+});
 
 // For vercel deployment
-sequelize.sync();
 module.exports = app;
