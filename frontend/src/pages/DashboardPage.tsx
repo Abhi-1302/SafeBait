@@ -5,14 +5,13 @@ import {
   Container,
   Paper,
   Grid,
-  Fab,
   CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import api from "../api/api.tsx";
 import CardStat from "../components/common/CardStat.tsx";
 import AnalyticsChart from "../components/AnalyticsChart.tsx";
-
+import Button from "../components/common/CustomButton.tsx";
 interface Campaign {
   id: number;
   name: string;
@@ -50,9 +49,9 @@ export default function DashboardPage() {
           <Typography variant="h5" fontWeight={700}>
             Dashboard
           </Typography>
-          <Fab variant="extended" color="primary" href="/campaigns/new">
-            <AddIcon sx={{ mr: 1 }} /> New Campaign
-          </Fab>
+          <Button variant="contained" color="primary" href="/campaigns/new" startIcon={<AddIcon />}>
+            New Campaign
+          </Button>
         </Box>
       </Paper>
       <Grid container spacing={3}>

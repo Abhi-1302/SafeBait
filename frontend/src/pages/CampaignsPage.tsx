@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Fab, Box } from "@mui/material";
+import { Container, Typography, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import api from "../api/api.tsx";
 import CampaignList, { CampaignSummary } from "../components/CampaignList.tsx";
 import LoadingSpinner from "../components/common/LoadingSpinner.tsx";
 import { useNavigate } from "react-router-dom";
-
+import Button from "../components/common/CustomButton.tsx";
 
 export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
@@ -25,9 +25,9 @@ export default function CampaignsPage() {
         <Typography variant="h4" fontWeight={700}>
           Campaigns
         </Typography>
-        <Fab color="primary" onClick={() => navigate("/campaigns/new")}>
-          <AddIcon />
-        </Fab>
+        <Button color="primary" onClick={() => navigate("/campaigns/new")} startIcon={<AddIcon />}>
+          Create
+        </Button>
       </Box>
       {loading ? <LoadingSpinner /> : <CampaignList campaigns={campaigns} />}
     </Container>
