@@ -26,6 +26,16 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { notify } = useNotification();
 
+  const validatePassword = (password: string) => {
+    const minLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return minLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -33,6 +43,12 @@ export default function RegisterPage() {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError("Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character");
       setIsLoading(false);
       return;
     }
@@ -160,7 +176,7 @@ export default function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               inputProps={{ minLength: 8 }}
-              helperText="Password must be at least 8 characters"
+              helperText="Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character"
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {

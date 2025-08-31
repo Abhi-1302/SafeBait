@@ -16,12 +16,32 @@ const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
+const validatePassword = (password) => {
+  const minLength = password.length >= 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasDigit = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+  return {
+    isValid:
+      minLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar,
+    message:
+      "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character",
+  };
+};
+
 // POST /api/auth/register
 router.post("/register", async (req, res) => {
   const { email, password } = req.body;
   try {
     if (await User.findOne({ where: { email } }))
       return res.status(400).json({ message: "User already exists" });
+
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      return res.status(400).json({ message: passwordValidation.message });
+    }
 
     const password_hash = await bcrypt.hash(password, 12);
     const user = await User.create({ email, password_hash });
@@ -130,10 +150,9 @@ router.post("/reset-password", async (req, res) => {
         .json({ message: "Email, OTP, and new password are required" });
     }
 
-    if (newPassword.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 6 characters long" });
+    const passwordValidation = validatePassword(newPassword);
+    if (!passwordValidation.isValid) {
+      return res.status(400).json({ message: passwordValidation.message });
     }
 
     const user = await User.findOne({ where: { email } });

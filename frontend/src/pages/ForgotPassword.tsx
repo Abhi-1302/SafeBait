@@ -40,11 +40,26 @@ export default function ForgotPassword() {
     }
   };
 
+  const validatePassword = (password: string) => {
+    const minLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return minLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
+  };
+
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
       notify('Passwords do not match', 'error');
+      return;
+    }
+
+    if (!validatePassword(newPassword)) {
+      notify('Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character', 'error');
       return;
     }
 
