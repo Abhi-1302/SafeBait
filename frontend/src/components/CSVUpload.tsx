@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  Button,
   Box,
   Typography,
   LinearProgress,
 } from "@mui/material";
 import api from "../api/api.tsx";
+import Button from "./common/CustomButton.tsx";
 import { useNotification } from "../context/NotificationContext.tsx";
 
 interface CSVUploadProps {

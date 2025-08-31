@@ -7,7 +7,6 @@ import {
   Chip,
   Divider,
   Grid,
-  Button,
   CircularProgress,
   Table,
   TableBody,
@@ -16,6 +15,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import Button from "../components/common/CustomButton.tsx";
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,

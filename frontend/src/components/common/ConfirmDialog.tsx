@@ -5,8 +5,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button,
 } from "@mui/material";
+import Button from "./CustomButton.tsx";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -34,7 +34,7 @@ export default function ConfirmDialog({
         <DialogContentText>{content}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel} color="inherit">
+        <Button onClick={onCancel} color="primary">
           {cancelText}
         </Button>
         <Button onClick={onConfirm} variant="contained" color="primary" autoFocus>

@@ -8,13 +8,13 @@ import {
   ListItemText,
   IconButton,
   Box,
-  Button,
   TextField,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import Button from "../components/common/CustomButton.tsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
 import api from "../api/api.tsx";

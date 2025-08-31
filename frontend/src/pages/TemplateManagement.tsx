@@ -4,13 +4,13 @@ import {
   Typography,
   Paper,
   TextField,
-  Button,
   Box,
   List,
   ListItem,
   ListItemText,
   IconButton,
 } from '@mui/material';
+import Button from '../components/common/CustomButton.tsx';
 import EditIcon from '@mui/icons-material/Edit';
 import TemplatePreview from '../components/TemplatePreiew.tsx';
 import api from '../api/api.tsx';

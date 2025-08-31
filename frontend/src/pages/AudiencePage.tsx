@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container, Typography, Paper, Box, Button, TextField, Grid,
+  Container, Typography, Paper, Box, TextField, Grid,
   List, ListItem, ListItemText, IconButton
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api.tsx";
+import Button from "../components/common/CustomButton.tsx";
 import ConfirmDialog from "../components/common/ConfirmDialog.tsx";
 import { useNotification } from "../context/NotificationContext.tsx";
-
+import LoadingSpinner from "../components/common/LoadingSpinner.tsx";
 interface Audience {
   id: number;
   name: string;
@@ -56,12 +57,16 @@ export default function AudiencePage() {
 
   const handleDelete = async (id: number) => {
     try {
+      setLoading(true);
       await api.delete(`/audiences/${id}`);
       setAudiences(list => list.filter(a => a.id !== id));
       notify("Audience deleted successfully!", "success");
     } catch {
       notify("Failed to delete audience", "error");
+    } finally {
+      setLoading(false);
     }
+    
   };
 
   const onDeleteConfirm = () => {
@@ -75,6 +80,24 @@ export default function AudiencePage() {
   return (
     <Container maxWidth="md" sx={{ mt: 5 }}>
       <Paper sx={{ p: 3, borderRadius: 2, mb: 3 }}>
+        {loading && (
+          <Box
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "rgba(255, 255, 255, 0.6)",
+              zIndex: 2,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+              <LoadingSpinner />
+            </Box>
+        )}
         <Typography variant="h5" fontWeight={700} mb={2}>
           Manage Audiences
         </Typography>

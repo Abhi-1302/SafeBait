@@ -90,4 +90,26 @@ router.get("/:id", authenticate, async (req, res) => {
 
   res.json(audience);
 });
+
+//DELETE /api/audiences/:id
+router.delete("/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+
+  const audienceId = parseInt(id, 10);
+  if (isNaN(audienceId)) {
+    return res.status(400).json({ message: "Invalid audience ID" });
+  }
+
+  const audience = await Audience.findOne({
+    where: { id: audienceId, userId: req.userId },
+  });
+
+  if (!audience) {
+    return res.status(404).json({ message: "Audience not found" });
+  }
+
+  await audience.destroy();
+  res.json({ message: "Audience deleted successfully" });
+});
+
 module.exports = router;

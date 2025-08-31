@@ -3,11 +3,11 @@ import {
   Box,
   TextField,
   MenuItem,
-  Button,
   Paper,
   Typography,
   CircularProgress,
 } from "@mui/material";
+import Button from "./common/CustomButton.tsx";
 import api from "../api/api.tsx";
 import {useNotification} from "../context/NotificationContext.tsx";
 

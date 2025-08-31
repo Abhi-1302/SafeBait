@@ -3,7 +3,6 @@ import {
   Container,
   Paper,
   TextField,
-  Button,
   Typography,
   Box,
   Alert,
@@ -11,6 +10,7 @@ import {
   Backdrop,
   Fade,
 } from '@mui/material';
+import Button from '../components/common/CustomButton.tsx';
 import { Link } from 'react-router-dom';
 import api from '../api/api.tsx';
 import { useNotification } from '../context/NotificationContext.tsx';
